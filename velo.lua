@@ -28,10 +28,7 @@ wait(0.001)
 	pre = totalVel
 end
 
-local function main()
-  while true do
-    velocity()
-   end
+while true do
+	velocity()
 end
 
-main()
