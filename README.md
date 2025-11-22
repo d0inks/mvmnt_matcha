@@ -1,4 +1,6 @@
-# kamiblox.moe
+# hyoko.lua
+
+hyoko lua port to roblox
 trying to write a movement script for matcha vm while trying to learn lua at the same time
 
 
@@ -19,7 +21,7 @@ lj❌
 
 bhop❌(or speed velocity below 25✅)
 
-gui based off kamidere ❌
+gui ❌
 
 fake headbounce ❌
 
