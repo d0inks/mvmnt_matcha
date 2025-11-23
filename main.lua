@@ -2,7 +2,7 @@
 --havent done jb yet--
 local CFG = {
     EB = 0x06; --mb5
-    ps = 0x05; --mb4
+    ps = 0x05 --mb4
 }
 local edging = false
 local psing = false
