@@ -101,18 +101,25 @@ local function color3fromHSV(h, s, v)
     i = i % 6
 
     local r, g, b
-    if i == 0 then r, g, b = v, t, p
-    elseif i == 1 then r, g, b = q, v, p
-    elseif i == 2 then r, g, b = p, v, t
-    elseif i == 3 then r, g, b = p, q, v
-    elseif i == 4 then r, g, b = t, p, v
-    else r, g, b = v, p, q end
+    if i == 0 then
+        r, g, b = v, t, p
+    elseif i == 1 then
+        r, g, b = q, v, p
+    elseif i == 2 then
+        r, g, b = p, v, t
+    elseif i == 3 then
+        r, g, b = p, q, v
+    elseif i == 4 then
+        r, g, b = t, p, v
+    else
+        r, g, b = v, p, q
+    end
 
-    return {r * 255, g * 255, b * 255}
+    return { r * 255, g * 255, b * 255 }
 end
 
 local function getMousePos()
-    return Vector2.new(myMouse.X, myMouse.Y) 
+    return Vector2.new(myMouse.X, myMouse.Y)
 end
 
 local function lerp(a, b, t)
@@ -133,7 +140,7 @@ end
 
 function UILib.new(name, size, watermarkActivity)
     repeat -- iskeypressed is halting our matcha menu button
-        wait(1/9999)
+        wait(1 / 9999)
     until isrbxactive()
 
     local self = setmetatable({}, UILib)
@@ -148,7 +155,6 @@ function UILib.new(name, size, watermarkActivity)
         ['unbound'] = { id = 0x08, held = false, click = false },
         ['tab'] = { id = 0x09, held = false, click = false },
         ['enter'] = { id = 0x0D, held = false, click = false },
-        ['shift'] = { id = 0x10, held = false, click = false },
         ['ctrl'] = { id = 0x11, held = false, click = false },
         ['alt'] = { id = 0x12, held = false, click = false },
         ['pause'] = { id = 0x13, held = false, click = false },
@@ -254,7 +260,7 @@ function UILib.new(name, size, watermarkActivity)
 
     self._active_tab = nil
     self._open = true
-    self._watermark = true
+    self._watermark = false
     self._base_opacity = 0
     self._dragging = false
     self._drag_offset = Vector2.new(0, 0)
@@ -273,7 +279,7 @@ function UILib.new(name, size, watermarkActivity)
 
     -- theme
     self._color_accent = Color3.fromRGB(135, 206, 235)
-    self._color_text = Color3.fromRGB(255,255,255)
+    self._color_text = Color3.fromRGB(255, 255, 255)
     self._color_crust = Color3.fromRGB(88, 96, 106)
     self._color_border = Color3.fromRGB(72, 80, 90)
     self._color_surface = Color3.fromRGB(49, 54, 60)
@@ -489,7 +495,7 @@ function UILib:_SpawnColorpicker(default, colorLabel, callback)
     cursorCrustSecondary.Thickness = 1
     cursorCrustSecondary.Color = self._color_crust
 
-    for _, cursor in ipairs{cursorBasePrimary, cursorCrustPrimary, cursorBaseSecondary, cursorCrustSecondary, cursorBorderSecondary} do
+    for _, cursor in ipairs { cursorBasePrimary, cursorCrustPrimary, cursorBaseSecondary, cursorCrustSecondary, cursorBorderSecondary } do
         table.insert(drawings, cursor)
     end
 
@@ -791,17 +797,18 @@ end
 
 function UILib:CreateSettingsTab(customName)
     local menuTab = self:Tab(customName or 'Menu')
+    local running = true
     local menuSettings = self:Section(menuTab, 'Settings')
-    self:Keybind(menuTab, menuSettings, 'Open key', 'rshift', function (state)
+    self:Keybind(menuTab, menuSettings, 'Open key', 'rshift', function(state)
         self:ToggleMenu(state)
     end, 'Toggle')
-    self:Checkbox(menuTab, menuSettings, 'Watermark', true, function (state)
+    self:Checkbox(menuTab, menuSettings, 'Watermark', false, function(state)
         self:ToggleWatermark(state)
     end)
     self:Checkbox(menuTab, menuSettings, 'Debug', false, nil)
     local menuTheme = self:Section(menuTab, 'Theming')
-    local presetThemes = {'X11', 'Nord', 'Dracula', 'Catppuccin', 'moon', 'bankroll'}
-    self:Choice(menuTab, menuTheme, 'Preset theme', {presetThemes[2]}, function (values)
+    local presetThemes = { 'X11', 'Nord', 'Dracula', 'Catppuccin', 'moon', 'bankroll' }
+    self:Choice(menuTab, menuTheme, 'Preset theme', { presetThemes[2] }, function(values)
         local themingItems = self._tree._tabs[#self._tree._tabs]._sections[2]
         local colorAccent = themingItems._items[2]
         local colorBase = themingItems._items[3]
@@ -811,41 +818,41 @@ function UILib:CreateSettingsTab(customName)
 
         local theme = values[2]
         if theme == presetThemes[1] then
-            colorAccent.value = {255, 128, 0}
-            colorBase.value = {38, 38, 38}
-            colorInnerStroke.value = {26, 26, 26}
-            colorOuterStroke.value = {77, 77, 77}
-            colorCrust.value = {0, 0, 0}
+            colorAccent.value = { 255, 128, 0 }
+            colorBase.value = { 38, 38, 38 }
+            colorInnerStroke.value = { 26, 26, 26 }
+            colorOuterStroke.value = { 77, 77, 77 }
+            colorCrust.value = { 0, 0, 0 }
         elseif theme == presetThemes[2] then
-            colorAccent.value = {135, 206, 235}
-            colorBase.value = {49, 54, 60}
-            colorInnerStroke.value = {72, 80, 90}
-            colorOuterStroke.value = {61, 66, 73}
-            colorCrust.value = {88, 96, 106}
+            colorAccent.value = { 135, 206, 235 }
+            colorBase.value = { 49, 54, 60 }
+            colorInnerStroke.value = { 72, 80, 90 }
+            colorOuterStroke.value = { 61, 66, 73 }
+            colorCrust.value = { 88, 96, 106 }
         elseif theme == presetThemes[3] then
-            colorAccent.value = {243, 67, 54}
-            colorBase.value = {40, 44, 59}
-            colorInnerStroke.value = {64, 71, 89}
-            colorOuterStroke.value = {29, 31, 45}
-            colorCrust.value = {72, 73, 95}
+            colorAccent.value = { 243, 67, 54 }
+            colorBase.value = { 40, 44, 59 }
+            colorInnerStroke.value = { 64, 71, 89 }
+            colorOuterStroke.value = { 29, 31, 45 }
+            colorCrust.value = { 72, 73, 95 }
         elseif theme == presetThemes[4] then
-            colorAccent.value = {240, 160, 200}
-            colorBase.value = {48, 47, 63}
-            colorInnerStroke.value = {72, 71, 89}
-            colorOuterStroke.value = {63, 62, 80}
-            colorCrust.value = {33, 32, 44}
+            colorAccent.value = { 240, 160, 200 }
+            colorBase.value = { 48, 47, 63 }
+            colorInnerStroke.value = { 72, 71, 89 }
+            colorOuterStroke.value = { 63, 62, 80 }
+            colorCrust.value = { 33, 32, 44 }
         elseif theme == presetThemes[5] then
-            colorAccent.value = {240, 160, 200}
-            colorBase.value = {48, 47, 63}
-            colorInnerStroke.value = {72, 71, 89}
-            colorOuterStroke.value = {63, 62, 80}
-            colorCrust.value = {33, 32, 44}
+            colorAccent.value = { 240, 160, 200 }
+            colorBase.value = { 48, 47, 63 }
+            colorInnerStroke.value = { 72, 71, 89 }
+            colorOuterStroke.value = { 63, 62, 80 }
+            colorCrust.value = { 33, 32, 44 }
         elseif theme == presetThemes[6] then
-            colorAccent.value = {240, 160, 200}
-            colorBase.value = {48, 47, 63}
-            colorInnerStroke.value = {72, 71, 89}
-            colorOuterStroke.value = {63, 62, 80}
-            colorCrust.value = {33, 32, 44}
+            colorAccent.value = { 240, 160, 200 }
+            colorBase.value = { 48, 47, 63 }
+            colorInnerStroke.value = { 72, 71, 89 }
+            colorOuterStroke.value = { 63, 62, 80 }
+            colorCrust.value = { 33, 32, 44 }
         end
 
         colorAccent.callback(Color3.fromRGB(unpack(colorAccent.value)))
@@ -854,19 +861,19 @@ function UILib:CreateSettingsTab(customName)
         colorOuterStroke.callback(Color3.fromRGB(unpack(colorOuterStroke.value)))
         colorCrust.callback(Color3.fromRGB(unpack(colorCrust.value)))
     end, presetThemes, false)
-    self:Colorpicker(menuTab, menuTheme, 'Accent', {135, 206, 235}, function (newColor)
+    self:Colorpicker(menuTab, menuTheme, 'Accent', { 135, 206, 235 }, function(newColor)
         self._color_accent = newColor
     end)
-    self:Colorpicker(menuTab, menuTheme, 'Base', {49, 54, 60}, function (newColor)
+    self:Colorpicker(menuTab, menuTheme, 'Base', { 49, 54, 60 }, function(newColor)
         self._color_surface = newColor
     end)
-    self:Colorpicker(menuTab, menuTheme, 'Inner stroke', {72, 80, 90}, function (newColor)
+    self:Colorpicker(menuTab, menuTheme, 'Inner stroke', { 72, 80, 90 }, function(newColor)
         self._color_border = newColor
     end)
-    self:Colorpicker(menuTab, menuTheme, 'Outer stroke', {61, 66, 73}, function (newColor)
+    self:Colorpicker(menuTab, menuTheme, 'Outer stroke', { 61, 66, 73 }, function(newColor)
         self._color_overlay = newColor
     end)
-    self:Colorpicker(menuTab, menuTheme, 'Crust', {88, 96, 106}, function (newColor)
+    self:Colorpicker(menuTab, menuTheme, 'Crust', { 88, 96, 106 }, function(newColor)
         self._color_crust = newColor
     end)
 
@@ -912,7 +919,7 @@ function UILib:Step()
     local watermarkTitle = self._tree['_drawings'][10]
 
     if self._watermark then
-        local watermarkStates = {self.identity}
+        local watermarkStates = { self.identity }
         local watermarkActivity = self._watermark_activity
         if watermarkActivity then
             for _, activity in ipairs(watermarkActivity) do
@@ -1061,8 +1068,8 @@ function UILib:Step()
         local sliderPos = hueSliderPos + Vector2.new(-2, self._active_colorpicker['_slider_y'])
 
         local relPalletePos = Vector2.new(
-            clamp((palletePos.x - palletePosition.x) / palleteSize, 0, 1),
-            clamp((palletePos.y - palletePosition.y) / palleteSize, 0, 1)
+                clamp((palletePos.x - palletePosition.x) / palleteSize, 0, 1),
+                clamp((palletePos.y - palletePosition.y) / palleteSize, 0, 1)
         )
         local relSliderPos = clamp((self._active_colorpicker['_slider_y']) / palleteSize, 0, 1)
 
@@ -1138,7 +1145,7 @@ function UILib:Step()
 
             if clickFrame and self._IsMouseWithinBounds(choicePos, choiceSize) then
                 dropdownCancel = not dropdownIsMulti
-                
+
                 if not dropdownIsMulti then
                     for choiceName, _ in pairs(dropdownChoices) do
                         dropdownChoices[choiceName] = false
@@ -1327,12 +1334,12 @@ function UILib:Step()
 
             if tabOpen then
                 local sectionY = self._padding * 2
-                local opposite = (sectionIndex+1) % 2
+                local opposite = (sectionIndex + 1) % 2
 
                 local sectionW = self.w / 2 - self._padding * 1.5
                 local sectionPos = Vector2.new(
-                    self.x + self._padding + self._padding * opposite + sectionW * opposite,
-                    self.y + self._title_h + self._tab_h + self._padding * 2 + (opposite==1 and totalSectionH_0 or totalSectionH_1)
+                        self.x + self._padding + self._padding * opposite + sectionW * opposite,
+                        self.y + self._title_h + self._tab_h + self._padding * 2 + (opposite == 1 and totalSectionH_0 or totalSectionH_1)
                 )
 
                 -- draw items
@@ -1425,7 +1432,7 @@ function UILib:Step()
                         sliderFill.Transparency = baseOpacity
                         sliderFill.Visible = fillVisible
                         sliderFill.Color = self._color_accent
-                        
+
                         sliderFillShadow.Position = itemPosition + Vector2.new(1, labelH + sliderH + 7)
                         sliderFillShadow.Size = Vector2.new(math.max(sliderW * fillPercent - 2, 0), 2)
                         sliderFillShadow.Transparency = 0.15 * baseOpacity
@@ -1532,7 +1539,7 @@ function UILib:Step()
                                     itemCallback(sectionItem['value'])
                                 end
 
-                                self:_SpawnDropdown({}, {'Clear'}, false, dropdownCallback, mousePos, 60)
+                                self:_SpawnDropdown({}, { 'Clear' }, false, dropdownCallback, mousePos, 60)
 
                             end
                         else
@@ -1614,13 +1621,13 @@ function UILib:Step()
                                     sectionItem['value'] = newColor
 
                                     if itemCallback then
-                                        itemCallback( Color3.fromRGB(unpack(sectionItem['value'])) )
+                                        itemCallback(Color3.fromRGB(unpack(sectionItem['value'])))
                                     end
                                 end
 
                                 self:_SpawnColorpicker(sectionItem['value'], sectionItem['label'], colorpickerCallback)
                             elseif ctxFrame then
-                                self:_SpawnDropdown({}, {'Copy', 'Paste'}, false, function (values)
+                                self:_SpawnDropdown({}, { 'Copy', 'Paste' }, false, function(values)
                                     local action = values[1]
                                     if action == 'Copy' then
                                         self._clipboard_color = itemValue
@@ -1684,10 +1691,10 @@ function UILib:Step()
                                 if inputData['click'] then
                                     sectionItem['value'] = keycode
                                     sectionItem['_listening'] = false
-                                    
+
                                     break
                                 end
-                            end 
+                            end
                         end
 
                         sectionY = sectionY + 22 + buttonTextH
@@ -1713,7 +1720,7 @@ function UILib:Step()
                 sectionBorder.Color = self._color_overlay
 
                 local _sectionTitleW, sectionTitleH = self._GetTextBounds('')
-                sectionTitle.Position = sectionPos + Vector2.new(10, - sectionTitleH / 2)
+                sectionTitle.Position = sectionPos + Vector2.new(10, -sectionTitleH / 2)
                 sectionTitle.Transparency = baseOpacity
                 sectionTitle.Visible = childrenVisible
                 sectionTitle.Color = self._color_text
@@ -1765,7 +1772,7 @@ function UILib:Destroy()
                 for _, drawing in pairs(section['_drawings']) do
                     drawing:Remove()
                 end
-                
+
                 if section._items then
                     for _, item in pairs(section._items) do
                         for _, drawing in pairs(item['_drawings']) do
